@@ -4,7 +4,7 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 5000;
 const app = express();
 
 // Middleware
@@ -162,3 +162,6 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`Kyphorantis project running on port ${port}`);
 });
+
+// Add this line for Vercel!
+module.exports = app;
