@@ -22,15 +22,15 @@ async function run() {
   try {
     // Connect the client to the server
     await client.connect();
-    
+
     const contactQueriesCollection = client.db("KyphorantisDB").collection("contactQueries");
 
     // Nodemailer Transporter Configuration
     const transporter = nodemailer.createTransport({
-      service: 'Gmail', 
+      service: 'Gmail',
       auth: {
-        user: process.env.EMAIL_USER, 
-        pass: process.env.EMAIL_PASS 
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
       }
     });
 
@@ -134,7 +134,18 @@ async function run() {
         res.status(500).send({ message: "Internal Server Error", error: err });
       }
     });
-
+    // GET Endpoint: Retrieve all contact requests
+    app.get('/contact-requests', async (req, res) => {
+      try {
+        const query = {};
+        // Find all documents in the collection and convert to an array
+        const result = await contactQueriesCollection.find(query).toArray();
+        res.send(result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        res.status(500).send({ message: "Failed to fetch data", error });
+      }
+    });
     console.log("Database Connected Successfully");
 
   } catch (error) {
